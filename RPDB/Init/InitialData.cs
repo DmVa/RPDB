@@ -17,7 +17,7 @@ namespace RPDB.Init
         {
             var result = new InitialData();
             result.ServerSetting = new ServerSetting() { IsWindowsAuth = true, Name = "." };
-            result.AppSetting = new AppSetting() { Id = AppSettingEnum.CompareCommand, Value = "WinMergeU.exe \"%1\" \"%2\"" };
+            result.AppSetting = new AppSetting() { Id = AppSettingEnum.CompareCommand, Value = "WinMergeU.exe /u /dl registered \"%1\" /dr \"%2\" \"%2\"" };
             result.Databases = new List<Database>();
             result.Databases.Add(new Database() { Name = "C1App", Alias = "$(C1App)" });
             result.Databases.Add(new Database() { Name = "Warehouse", Alias = "$(Warehouse)" });
