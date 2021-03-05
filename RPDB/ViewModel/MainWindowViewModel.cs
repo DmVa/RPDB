@@ -278,15 +278,15 @@ namespace RPDB.ViewModel
                 File.Delete(temp_file);
 
             File.WriteAllText(temp_file, SelectedScript.Registered.Text);
-
-            var argumentsIndex = compareProcess.IndexOf("%1");
-            if (argumentsIndex > 0 && compareProcess[argumentsIndex - 1] == '"')
+            string[] compareCommand = compareProcess.Split(new char[] {' '},StringSplitOptions.RemoveEmptyEntries);
+            if (compareCommand.Length == 0)
             {
-                argumentsIndex--;
+                AddLog($"cannot understand compare command");
             }
-            string command = compareProcess.Substring(0, argumentsIndex).Trim();
-            string arguments = compareProcess.Substring(argumentsIndex).Trim();
 
+            string command = compareProcess.Substring(0, compareCommand[0].Length).Trim();
+            var argumentsIndex = command.Length;
+            string arguments = compareProcess.Substring(argumentsIndex).Trim();
 
             arguments = arguments.Replace("%1", temp_file);
             arguments = arguments.Replace("%2", SelectedScript.FileData.FullFileName);

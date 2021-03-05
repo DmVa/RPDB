@@ -1,7 +1,7 @@
 {
   "AppSetting": {
     "Id": 0,
-    "Value": "WinMergeU \"%1\" \"%2\""
+    "Value": "WinMergeU /dl registered \"%1\" /dr \"%2\" \"%2\""
   },
   "ServerSetting": {
     "Id": 0,
