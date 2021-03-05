@@ -265,13 +265,11 @@ namespace RPDB.ViewModel
 
             if (!compareProcess.Contains("%1") || !compareProcess.Contains("%2"))
             {
-                AddLog($"compare command bad format, expected <appname> \"%1\" \"%2\"");
+                AddLog($"compare command bad format, expected <appname> [optionalparams] \"%1\" \"%2\"");
                 AddLog($"<appname> \"%1\" \"%2\"");
                 AddLog($"\"%1\" - temp registered file \"%2\" - actual file on disk");
                 return;
             }
-
-
 
             string temp_file = "tmpRegistered_" + SelectedScript.Registered.Name;
             if (File.Exists(temp_file))
@@ -281,7 +279,7 @@ namespace RPDB.ViewModel
             string[] compareCommand = compareProcess.Split(new char[] {' '},StringSplitOptions.RemoveEmptyEntries);
             if (compareCommand.Length == 0)
             {
-                AddLog($"cannot understand compare command");
+                AddLog($"compare command bad format, expected <appname> \"%1\" \"%2\"");
             }
 
             string command = compareProcess.Substring(0, compareCommand[0].Length).Trim();
