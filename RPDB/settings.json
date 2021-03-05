@@ -1,0 +1,137 @@
+{
+  "AppSetting": {
+    "Id": 0,
+    "Value": "WinMergeU \"%1\" \"%2\""
+  },
+  "ServerSetting": {
+    "Id": 0,
+    "Name": ".",
+    "IsWindowsAuth": true,
+    "UserName": null,
+    "Password": null
+  },
+  "Databases": [
+    {
+      "Id": 0,
+      "Name": "C1App",
+      "Alias": "$(C1App)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Warehouse",
+      "Alias": "$(Warehouse)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Workflow",
+      "Alias": "$(Workflow)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Bpm",
+      "Alias": "$(Bpm)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "CPP",
+      "Alias": "$(CPP)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Data",
+      "Alias": "$(Data)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Hexacom",
+      "Alias": "$(Hexacom)",
+      "Scripts": null
+    },
+    {
+      "Id": 0,
+      "Name": "Str",
+      "Alias": "$(Str)",
+      "Scripts": null
+    }
+  ],
+  "SerachFolders": [
+    {
+      "DatabaseName": "Workflow",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\DbProjects\\DB\\Workflow",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 1
+    },
+    {
+      "DatabaseName": "Bpm",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\DbProjects\\DB\\Bpm",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 2
+    },
+    {
+      "DatabaseName": "C1App",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\DbProjects\\DB\\C1App",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 3
+    },
+    {
+      "DatabaseName": "STR",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\DbProjects\\DB\\STR",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 4
+    },
+    {
+      "DatabaseName": "Warehouse",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\DbProjects\\DB\\Warehouse",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 5
+    },
+    {
+      "DatabaseName": "C1App",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\install\\resources\\After_Creation\\C1App",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 6
+    },
+    {
+      "DatabaseName": "Str",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\install\\resources\\After_Creation\\STR",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 7
+    },
+    {
+      "DatabaseName": "Workflow",
+      "Id": 0,
+      "Path": "c:\\Source\\c1\\install\\resources\\After_Creation\\Workflow",
+      "IncludeSubfolders": true,
+      "DatabaseId": 0,
+      "Database": null,
+      "SortOrder": 8
+    }
+  ]
+}
