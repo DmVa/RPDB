@@ -320,15 +320,26 @@ namespace RPDB.ViewModel
             }
             var sp = new Stopwatch();
             sp.Start();
-            try
+			var errors = new List<string>();
+			try
             {
-                _scriptRunner.RunScript(SelectedScript, SelectedDatabase?.Id ?? 0);
-            }
+				var warrnings = new List<string>();
+				_scriptRunner.RunScript(SelectedScript, SelectedDatabase?.Id ?? 0, warrnings, errors);
+				foreach(var warning in warrnings)
+				{
+					AddLog("WARNING:" + warning);
+				}
+				
+			}
             catch(Exception ex)
             {
                 AddLog("Execution error: ");
                 AddLog(ex.Message);
-                throw;
+				foreach (var error in errors)
+				{
+					AddLog("ERROR:" + error);
+				}
+				throw;
             }
 
             sp.Stop();

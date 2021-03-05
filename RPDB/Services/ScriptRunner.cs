@@ -75,7 +75,7 @@ namespace RPDB.Services
             }
         }
 
-        internal void RunScript(ScriptData script, int databaseId)
+        internal void RunScript(ScriptData script, int databaseId, List<string> warrings, List<string> errors)
         {
             if (script == null)
                 throw new ApplicationException("Script not selected");
@@ -97,12 +97,16 @@ namespace RPDB.Services
             {
                 throw new ApplicationException($"cannot build connection string to database {_dataBaseInfo[databaseId].Name} server: {_serverSetting.Name}");
             }
-           
-            using (SqlConnection conn = new SqlConnection(connectionString))
+
+			IEnumerable<string> statements = SplitSqlStatements(sql);
+			VerifyStatements(statements, warrings, errors);
+			if (errors.Count > 0)
+				throw new ApplicationException(errors[0]);
+
+			using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
-                IEnumerable<string> statements = SplitSqlStatements(sql);
-                VerifyStatements(statements);
+
                 foreach (string statement in statements)
                 {
                     string statementToExecute = ReplaceTokens(statement);
@@ -122,18 +126,22 @@ namespace RPDB.Services
             }
         }
 
-        private void VerifyStatements(IEnumerable<string> statements)
-        {
-            foreach (string statement in statements)
-            {
-                if (statement.ToUpper().Contains("USE "))
-                {
-                    throw new ApplicationException("USE statement not supported. Run script manually and register it.");
-                }
-            }
-        }
+		private void VerifyStatements(IEnumerable<string> statements, List<string> warrnings, List<string> errors)
+		{
+			if (warrnings == null)
+				warrnings = new List<string>();
+			if (errors == null)
+				errors = new List<string>();
+			foreach (string statement in statements)
+			{
+				if (statement.ToUpper().Contains("USE "))
+				{
+					warrnings.Add("USE statement not supported. Run script manually and register it.");
+				}
+			}
+		}
 
-        private void EnsureDbDataLoaded()
+		private void EnsureDbDataLoaded()
         {
             using (var dbcontext = new DataContext())
             {
