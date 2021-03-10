@@ -136,7 +136,7 @@ namespace RPDB.Services
 			{
 				if (statement.ToUpper().Contains("USE "))
 				{
-					warrnings.Add("USE statement not supported. Run script manually and register it.");
+					warrnings.Add("USE statement not supported. Statement ignored.");
 				}
 			}
 		}
