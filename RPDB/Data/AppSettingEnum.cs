@@ -8,6 +8,7 @@ namespace RPDB.Data
 {
     public enum AppSettingEnum
     {
-        CompareCommand
+        CompareCommand,
+        AutosyncFoldersFrom
     }
 }

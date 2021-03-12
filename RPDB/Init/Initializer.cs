@@ -19,17 +19,47 @@ namespace RPDB.Init
             File.WriteAllText(_settingsFile, json);
         }
 
-        public void LoadSettings()
+        public void LoadInitialSettings()
         {
-            if (!File.Exists(_settingsFile))
-                return;
+            try
+            {
+                if (!File.Exists(_settingsFile))
+                    return;
 
-            var json = File.ReadAllText(_settingsFile);
-            InitialData data = JsonConvert.DeserializeObject<InitialData>(json);
-            if (data == null)
-                return;
+                var json = File.ReadAllText(_settingsFile);
+                InitialData data = JsonConvert.DeserializeObject<InitialData>(json);
+                if (data == null)
+                    return;
 
-            ImportToDb(data);
+                ImportToDb(data);
+            }
+            catch(Exception e)
+            {
+                ApplicationSettings.Current.Logger.LogError("unhandled in load settings", e);
+            }
+        }
+
+        internal void SyncFolderDefinitionsIfRequired()
+        {
+            try
+            {
+                string fileToSync = null;
+                using (var context = new DataContext())
+                {
+                    var setting = context.AppSettings.Where(x => x.Id == AppSettingEnum.AutosyncFoldersFrom).FirstOrDefault();
+                    fileToSync = setting?.Value;
+                }
+                if (string.IsNullOrEmpty(fileToSync))
+                    return;
+                if (!File.Exists(fileToSync))
+                    return;
+
+                ImportSearchFolders(fileToSync);
+            }
+            catch (Exception e)
+            {
+                ApplicationSettings.Current.Logger.LogError("unhandled in sync folder definitions", e);
+            }
         }
 
         private void ImportToDb(InitialData data)
@@ -46,7 +76,7 @@ namespace RPDB.Init
 
                 if (!context.AppSettings.Any())
                 {
-                    context.AppSettings.Add(data.AppSetting);
+                    context.AppSettings.AddRange(data.AppSetting);
                     context.SaveChanges();
                 }
 

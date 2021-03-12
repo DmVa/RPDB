@@ -95,6 +95,10 @@
     <Compile Include="Migrations\202102272347476_AddSortOrder.designer.cs">
       <DependentUpon>202102272347476_AddSortOrder.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103120521173_addAutoSyncFolderSetting.cs" />
+    <Compile Include="Migrations\202103120521173_addAutoSyncFolderSetting.designer.cs">
+      <DependentUpon>202103120521173_addAutoSyncFolderSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\ScriptData.cs" />
     <Compile Include="Services\ScriptFile.cs" />
@@ -175,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202102272347476_AddSortOrder.resx">
       <DependentUpon>202102272347476_AddSortOrder.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103120521173_addAutoSyncFolderSetting.resx">
+      <DependentUpon>202103120521173_addAutoSyncFolderSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -9,15 +9,17 @@ namespace RPDB.Init
 {
     public class InitialData
     {
-        public AppSetting AppSetting { get; set; }
+        public List<AppSetting> AppSetting { get; set; }
         public ServerSetting ServerSetting { get; set; }
         public List<Database> Databases { get; set; }
         public List<SearchFolderInit> SerachFolders { get; set; }
         public InitialData CreateDefault()
         {
             var result = new InitialData();
+            result.AppSetting = new List<AppSetting>();
             result.ServerSetting = new ServerSetting() { IsWindowsAuth = true, Name = "." };
-            result.AppSetting = new AppSetting() { Id = AppSettingEnum.CompareCommand, Value = "WinMergeU.exe /u /dl registered \"%1\" /dr \"%2\" \"%2\"" };
+            result.AppSetting.Add(new AppSetting() { Id = AppSettingEnum.CompareCommand, Value = "WinMergeU.exe /u /dl registered \"%1\" /dr \"%2\" \"%2\"" });
+            result.AppSetting.Add(new AppSetting() { Id = AppSettingEnum.AutosyncFoldersFrom, Value = @"\\azwesv0025\Tools\folders.rpdb" });
             result.Databases = new List<Database>();
             result.Databases.Add(new Database() { Name = "C1App", Alias = "$(C1App)" });
             result.Databases.Add(new Database() { Name = "Warehouse", Alias = "$(Warehouse)" });

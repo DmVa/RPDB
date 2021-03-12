@@ -27,8 +27,9 @@ namespace RPDB
 
             System.Data.Entity.Database.SetInitializer(new MigrateDatabaseToLatestVersion<DataContext, RPDB.Migrations.Configuration>());
             var initializer = new Initializer();
-           // initializer.SaveSettings();
-            initializer.LoadSettings();
+            //initializer.SaveSettings();
+            initializer.LoadInitialSettings();
+            initializer.SyncFolderDefinitionsIfRequired();
         }
 
         private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
