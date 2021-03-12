@@ -92,8 +92,8 @@
                             </ComboBox>
                         </StackPanel>
                         <Button Content="Load script" Margin="5" Padding="2"  Command="{Binding LoadSelectedScriptCommand}"  />
-                        <Button Content="Run script" Margin="5" Padding="2" Command="{Binding RunScriptCommand}"  />
-                        <Button Content="Register without run" Margin="5" Padding="2" Command="{Binding RegisterScriptCommand}"  />
+                        <Button Content="Run script" Margin="5" Padding="2" FontWeight="Bold" Command="{Binding RunScriptCommand}"  />
+                        <Button Content="Register without run" Margin="5" FontWeight="Bold" Padding="2" Command="{Binding RegisterScriptCommand}"  />
                         <Button Content="Compare" Margin="5" Padding="2"  Command="{Binding CompareCommand}"  />
                     </StackPanel>
                     <StackPanel Grid.Row="2"  Orientation="Horizontal">

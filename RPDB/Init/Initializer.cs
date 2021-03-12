@@ -79,5 +79,79 @@ namespace RPDB.Init
                 }
             }
         }
+
+        public void ExportSearchFolders(string fileName)
+        {
+            using (var context = new DataContext())
+            {
+                var model = new SearchFolderExportModel();
+                model.Folders = context.SearchFolders.Include("Database").ToList();
+
+                var json = JsonConvert.SerializeObject(model, Formatting.Indented);
+                File.WriteAllText(fileName, json);
+            }
+        }
+
+        public void ImportSearchFolders(string fileName)
+        {
+            var json = File.ReadAllText(fileName);
+            SearchFolderExportModel data = JsonConvert.DeserializeObject<SearchFolderExportModel>(json);
+            if (data.Folders == null)
+            {
+                throw new ApplicationException("Data not defined");
+            }
+
+            EnusureDatabasesDefined(data);
+            using (var context = new DataContext())
+            {
+                foreach (var item in data.Folders)
+                {
+
+                    ImportSearchFolder(item, context);
+                }
+                context.SaveChanges();
+            }
+        }
+
+        private void EnusureDatabasesDefined(SearchFolderExportModel data)
+        {
+            using (var context = new DataContext())
+            {
+                foreach (var item in data.Folders)
+                {
+                    var database = context.Databases.Where(x => x.Name == item.Database.Name).First();
+                    if (database == null)
+                    {
+                        database = new Database();
+                        database.Name = item.Database.Name;
+                        context.Databases.Add(database);
+                    }
+                    database.Alias = item.Database.Alias;
+                }
+
+                context.SaveChanges();
+            }
+        }
+
+        private void ImportSearchFolder(SearchFolder item, DataContext context)
+        {
+            var sf = context.SearchFolders.Where(x => x.Path == item.Path).FirstOrDefault();
+            if (sf == null)
+            {
+                sf = new SearchFolder();
+                context.SearchFolders.Add(sf);
+            }
+
+            sf.DatabaseId = context.Databases.Where(x => x.Name == item.Database.Name).Select(x => x.Id).First();
+            sf.Path = item.Path;
+            sf.IncludeSubfolders = item.IncludeSubfolders;
+            sf.SortOrder = item.SortOrder;
+            context.SaveChanges();
+        }
+    }
+
+    public class SearchFolderExportModel
+    {
+        public List<SearchFolder> Folders { get; set; }
     }
 }

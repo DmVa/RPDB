@@ -19,6 +19,8 @@
             <StackPanel Orientation="Vertical" Grid.Column="0">
                 <Button x:Name="buttonOk" Content="Save" FontWeight="Bold" Margin="5,5,5,5" Height="30" VerticalAlignment="Top" Command="{Binding SaveCommand}"/>
                 <Button x:Name="buttonDelete" Content="Delete" Margin="5,5,5,5" Height="30" VerticalAlignment="Top" Command="{Binding DeleteCommand}" />
+                <Button x:Name="buttonExport" Content="Export" Margin="5,5,5,5" Height="30" VerticalAlignment="Top" Command="{Binding ExportCommand}" />
+                <Button x:Name="buttonImport" Content="Import" Margin="5,5,5,5" Height="30" VerticalAlignment="Top" Command="{Binding ImportCommand}" />
                 <Button x:Name="buttonClose" Content="Close" Margin="5,5,5,5" Height="30" VerticalAlignment="Top" Command="{Binding CloseCommand}" />
             </StackPanel>
 
@@ -28,7 +30,7 @@
                       CanUserAddRows="True" >
                 <DataGrid.Columns>
 
-                    <DataGridTextColumn Header="Sort Order" SortMemberPath="SortOrder" Width="25"  Binding="{Binding SortOrder}" />
+                    <DataGridTextColumn Header="Order" SortMemberPath="SortOrder" Width="45"  Binding="{Binding SortOrder}" />
 
                     <DataGridComboBoxColumn  Width="120" Header="Database" ItemsSource="{Binding Source={StaticResource Databases}}" 
                                              SelectedValueBinding="{Binding Path=DatabaseId}"

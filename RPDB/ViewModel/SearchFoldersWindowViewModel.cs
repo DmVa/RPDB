@@ -1,7 +1,11 @@
-﻿using RPDB.Data;
+﻿using Microsoft.Win32;
+using Newtonsoft.Json;
+using RPDB.Data;
+using RPDB.Init;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,9 +19,12 @@ namespace RPDB.ViewModel
         private BaseCommand _closeCommand;
         private BaseCommand _saveCommand;
         private BaseCommand _deleteCommand;
+        private BaseCommand _exportCommand;
+        private BaseCommand _importCommand;
         private ObservableCollection<SearchFolder> _folders;
         private SearchFolder _selectedFolder;
         private ObservableCollection<Database> _databases;
+        private const string DialogFilter = "data files (*.rpdb)|*.rpdb|All files (*.*)|*.*";
         public Window Window { get; set; }
         public ICommand CloseCommand
         {
@@ -38,6 +45,20 @@ namespace RPDB.ViewModel
             get
             {
                 return _deleteCommand;
+            }
+        }
+        public ICommand ExportCommand
+        {
+            get
+            {
+                return _exportCommand;
+            }
+        }
+        public ICommand ImportCommand
+        {
+            get
+            {
+                return _importCommand;
             }
         }
 
@@ -88,6 +109,35 @@ namespace RPDB.ViewModel
             _closeCommand = new BaseCommand(()=> { Close(false); });
             _saveCommand = new BaseCommand(()=> { Close(true); });
             _deleteCommand = new BaseCommand(DeleteRecord);
+            _exportCommand = new BaseCommand(DoExport);
+            _importCommand = new BaseCommand(DoImport);
+        }
+
+        private void DoImport()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = DialogFilter;
+            if (openFileDialog.ShowDialog() == true)
+            {
+                var initializer = new Initializer();
+                initializer.ImportSearchFolders(openFileDialog.FileName);
+
+                LoadData();
+            }
+        }
+
+        private void DoExport()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.AddExtension = true;
+            saveFileDialog.Filter = DialogFilter;
+            saveFileDialog.DefaultExt = "rpdb";
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                var initializer = new Initializer();
+                initializer.ExportSearchFolders(saveFileDialog.FileName);
+            }
         }
 
         private void DeleteRecord()
@@ -146,5 +196,4 @@ namespace RPDB.ViewModel
             this.Window.Close();
         }
     }
-
 }
