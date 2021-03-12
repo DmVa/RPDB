@@ -99,6 +99,10 @@
     <Compile Include="Migrations\202103120521173_addAutoSyncFolderSetting.designer.cs">
       <DependentUpon>202103120521173_addAutoSyncFolderSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103120924077_addCompareSetting.cs" />
+    <Compile Include="Migrations\202103120924077_addCompareSetting.designer.cs">
+      <DependentUpon>202103120924077_addCompareSetting.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\ScriptData.cs" />
     <Compile Include="Services\ScriptFile.cs" />
@@ -182,6 +186,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103120521173_addAutoSyncFolderSetting.resx">
       <DependentUpon>202103120521173_addAutoSyncFolderSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103120924077_addCompareSetting.resx">
+      <DependentUpon>202103120924077_addCompareSetting.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
