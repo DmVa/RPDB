@@ -44,7 +44,7 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="5"/>
-                <ColumnDefinition Width="300"/>
+                <ColumnDefinition Width="250"/>
             </Grid.ColumnDefinitions>
 
             <Grid>
@@ -64,6 +64,7 @@
                         <DataGridTextColumn Header="File" SortMemberPath="FileData.FileName" Width="200"  Binding="{Binding Path=FileData.FileName}" />
                         <DataGridTextColumn Header="Database" SortMemberPath="ExpectedDatabaseName" Width="200"  Binding="{Binding Path=ExpectedDatabaseName}"  />
                         <DataGridTextColumn Header="Path" SortMemberPath="FileData.Path" Width="200"  Binding="{Binding Path=FileData.Path}" />
+						<DataGridTextColumn Header="File Date" SortMemberPath="FileData.FileDate" Binding="{Binding Path=FileData.FileDate, StringFormat=\{0:yyyy-MM-dd HH:mm:ss\}}" />
                     </DataGrid.Columns>
                 </DataGrid>
 
