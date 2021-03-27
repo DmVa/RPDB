@@ -13,6 +13,8 @@ namespace RPDB.Data
         public string Name { get; set; }
         public string Text { get; set; }
         public DateTime? FileTime { get; set; }
+        public string PreviousText { get; set; }
+        public DateTime? PreviousFileTime { get; set; }
         public int? FileSize { get; set; }
         public bool Executed { get; set; }
         public bool Ignore { get; set; }

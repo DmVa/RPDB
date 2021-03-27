@@ -103,6 +103,10 @@
     <Compile Include="Migrations\202103120924077_addCompareSetting.designer.cs">
       <DependentUpon>202103120924077_addCompareSetting.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202103262310485_ScriptAddPreviousText.cs" />
+    <Compile Include="Migrations\202103262310485_ScriptAddPreviousText.designer.cs">
+      <DependentUpon>202103262310485_ScriptAddPreviousText.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\ScriptData.cs" />
     <Compile Include="Services\ScriptFile.cs" />
@@ -131,7 +135,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
+    <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -140,7 +144,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ViewModel\BaseCommand.cs" />
-    <Compile Include="MainWindow.xaml.cs">
+    <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
@@ -175,6 +179,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Resource Include="Content\run.png" />
     <Content Include="WinMergeU.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -189,6 +194,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103120924077_addCompareSetting.resx">
       <DependentUpon>202103120924077_addCompareSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202103262310485_ScriptAddPreviousText.resx">
+      <DependentUpon>202103262310485_ScriptAddPreviousText.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

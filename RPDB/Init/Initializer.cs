@@ -131,7 +131,7 @@ namespace RPDB.Init
                 throw new ApplicationException("Data not defined");
             }
 
-            EnusureDatabasesDefined(data);
+            VerifyDatabasesDefined(data);
             using (var context = new DataContext())
             {
                 foreach (var item in data.Folders)
@@ -143,7 +143,7 @@ namespace RPDB.Init
             }
         }
 
-        private void EnusureDatabasesDefined(SearchFolderExportModel data)
+        private void VerifyDatabasesDefined(SearchFolderExportModel data)
         {
             using (var context = new DataContext())
             {

@@ -17,8 +17,8 @@ using System.Windows.Input;
 
 namespace RPDB.ViewModel
 {
-    public class MainWindowViewModel: BasePropertyChanged
-    { 
+    public class MainWindowViewModel : BasePropertyChanged
+    {
         private BaseCommand _serverSettingsCommand;
         private BaseCommand _appSettingsCommand;
         private BaseCommand _databasesSettingsCommand;
@@ -30,7 +30,9 @@ namespace RPDB.ViewModel
         private BaseCommand _registerAllScriptsCommand;
         private BaseCommand _unregisterAllScriptsCommand;
         private BaseCommand _runScriptCommand;
+        private BaseCommand _runScriptFromWindowCommand;
         private BaseCommand _compareCommand;
+        private BaseCommand _compareToPreviousCommand;
 
         private bool _isLoading;
         private string _updateLog;
@@ -96,9 +98,18 @@ namespace RPDB.ViewModel
         {
             get { return _runScriptCommand; }
         }
+        public ICommand RunScriptFromWindowCommand
+        {
+            get { return _runScriptFromWindowCommand; }
+        }
+        
         public ICommand CompareCommand
         {
             get { return _compareCommand; }
+        }
+        public ICommand CompareToPreviousCommand
+        {
+            get { return _compareToPreviousCommand; }
         }
 
 
@@ -139,7 +150,7 @@ namespace RPDB.ViewModel
         public ObservableCollection<ScriptData> Scripts
         {
             get { return _scripts; }
-            set { 
+            set {
                 _scripts = value;
                 RaisePropertyChanged(nameof(Scripts));
             }
@@ -183,12 +194,12 @@ namespace RPDB.ViewModel
             {
                 AddLog("Databases initialization fail" + ex.Message);
             }
-            
+
             try
             {
                 DoScanChanges();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 AddLog("Initial scan fail" + ex.Message);
             }
@@ -222,35 +233,75 @@ namespace RPDB.ViewModel
             _registerAllScriptsCommand = new BaseCommand(DoRegisterAllScripts, CanExecuteAction);
             _unregisterAllScriptsCommand = new BaseCommand(DoUnregisterAllScripts, CanExecuteAction);
             _runScriptCommand = new BaseCommand(DoRunScript, CanExecuteAction);
+            _runScriptFromWindowCommand = new BaseCommand(DoRunScriptFromWindow, CanExecuteAction);
             _compareCommand = new BaseCommand(DoCompare);
+            _compareToPreviousCommand = new BaseCommand(DoCompareToPrevious);
         }
+
+
 
         private void DoUnregisterAllScripts()
         {
-             _scriptRunner.UnRegisterAllScripts();
-            AddLog("registration cleared"); 
+            _scriptRunner.UnRegisterAllScripts();
+            AddLog("registration cleared");
             DoScanChanges();
+        }
+        private void DoCompareToPrevious()
+        {
+            if (!ValidateIfSelectedRegisteredFile())
+                return;
+
+            string temp_file_current = "tmpRegisteredCurrent_" + SelectedScript.Registered.Name;
+            if (File.Exists(temp_file_current))
+                File.Delete(temp_file_current);
+            File.WriteAllText(temp_file_current, SelectedScript.Registered.Text);
+
+            string temp_file_previous = "tmpRegisteredPrevious_" + SelectedScript.Registered.Name;
+            if (File.Exists(temp_file_previous))
+                File.Delete(temp_file_previous);
+            File.WriteAllText(temp_file_previous, SelectedScript.Registered.PreviousText ?? "");
+
+            RunCompare(temp_file_previous, temp_file_current, true, true);
         }
 
         private void DoCompare()
         {
+            if (!ValidateIfSelectedRegisteredFile())
+                return;
+
+            string temp_file = "tmpRegistered_" + SelectedScript.Registered.Name;
+            if (File.Exists(temp_file))
+                File.Delete(temp_file);
+            File.WriteAllText(temp_file, SelectedScript.Registered.Text);
+
+            RunCompare(temp_file, SelectedScript.FileData.FullFileName, true, false);
+        }
+    
+
+        private bool ValidateIfSelectedRegisteredFile()
+        {
             if (SelectedScript == null)
             {
                 AddLog($"Script not selected");
-                return;
+                return false;
             }
 
             if (SelectedScript.Registered == null)
             {
                 AddLog($"Script not registered");
-                return;
+                return false;
             }
 
             if (string.IsNullOrEmpty(SelectedScript.Registered.Text))
             {
                 AddLog($"Script text was not saved");
-                return;
+                return false;
             }
+            return true;
+        }
+      
+        private void RunCompare(string fileName1, string fileName2, bool deleteFile1, bool deleteFile2)
+        {
             string compareProcess = "";
             using (var dbContext = new DataContext())
             {
@@ -271,11 +322,6 @@ namespace RPDB.ViewModel
                 return;
             }
 
-            string temp_file = "tmpRegistered_" + SelectedScript.Registered.Name;
-            if (File.Exists(temp_file))
-                File.Delete(temp_file);
-
-            File.WriteAllText(temp_file, SelectedScript.Registered.Text);
             string[] compareCommand = compareProcess.Split(new char[] {' '},StringSplitOptions.RemoveEmptyEntries);
             if (compareCommand.Length == 0)
             {
@@ -286,8 +332,8 @@ namespace RPDB.ViewModel
             var argumentsIndex = command.Length;
             string arguments = compareProcess.Substring(argumentsIndex).Trim();
 
-            arguments = arguments.Replace("%1", temp_file);
-            arguments = arguments.Replace("%2", SelectedScript.FileData.FullFileName);
+            arguments = arguments.Replace("%1", fileName1);
+            arguments = arguments.Replace("%2", fileName2);
 
             AddLog($"Executing: {command} {arguments} ");
 
@@ -298,8 +344,12 @@ namespace RPDB.ViewModel
             process.EnableRaisingEvents = true;
             process.Exited += (s, e) =>
             {
-                if (File.Exists(temp_file))
-                    File.Delete(temp_file);
+
+                if (deleteFile1 && File.Exists(fileName1))
+                    File.Delete(fileName1);
+
+                if (deleteFile2 && File.Exists(fileName2))
+                    File.Delete(fileName2);
             };
 
             process.Start();
@@ -309,6 +359,35 @@ namespace RPDB.ViewModel
         private void CompareProcess_Exited(object sender, EventArgs e)
         {
           
+        }
+        private void DoRunScriptFromWindow()
+        {
+            var sp = new Stopwatch();
+            sp.Start();
+            var errors = new List<string>();
+            try
+            {
+                var warrnings = new List<string>();
+                _scriptRunner.RunScriptText(ScriptText, SelectedDatabase?.Id ?? 0, warrnings, errors);
+                foreach (var warning in warrnings)
+                {
+                    AddLog("WARNING:" + warning);
+                }
+
+            }
+            catch (Exception ex)
+            {
+                AddLog("Execution error: ");
+                AddLog(ex.Message);
+                foreach (var error in errors)
+                {
+                    AddLog("ERROR:" + error);
+                }
+                throw;
+            }
+
+            sp.Stop();
+            AddLog($"Script Executed, time {sp.Elapsed.TotalSeconds} sec");
         }
 
         private void DoRunScript()

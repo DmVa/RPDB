@@ -37,17 +37,19 @@ namespace RPDB.Services
             {
                 registration = new Data.RegisteredScript();
                 dbcontext.RegisteredScripts.Add(registration);
-                //registration.
             }
             else
             {
                 registration = dbcontext.RegisteredScripts.FirstOrDefault(x => x.Id == script.Registered.Id);
             }
+            registration.PreviousFileTime = registration.FileTime;
+            registration.PreviousText = registration.Text;
             registration.FileSize = Convert.ToInt32(script.FileData.FileSize);
             registration.FileTime = script.FileData.FileDate;
             registration.Name = script.FileData.FileName;
             registration.Path = script.FileData.Path;
             registration.DatabaseId = DatabaseId;
+            
             registration.Text = File.ReadAllText(script.FileData.FullFileName);
             return registration;
         }
@@ -75,22 +77,16 @@ namespace RPDB.Services
             }
         }
 
-        internal void RunScript(ScriptData script, int databaseId, List<string> warrings, List<string> errors)
+        internal void RunScriptText(string sql, int databaseId, List<string> warrings, List<string> errors)
         {
-            if (script == null)
-                throw new ApplicationException("Script not selected");
-
+            if (string.IsNullOrEmpty(sql))
+                throw new ApplicationException($"SQL not defined");
             if (databaseId == 0)
                 throw new ApplicationException("database not defined");
 
             EnsureDbDataLoaded();
             if (!_dataBaseInfo.ContainsKey(databaseId))
-                 throw new ApplicationException($"database info not loaded for selected database"); ;
-
-            string sql = File.ReadAllText(script.FileData.FullFileName);
-
-            if (string.IsNullOrEmpty(sql))
-                throw new ApplicationException($"SQL not loaded from {script?.FileData?.FullFileName ?? "null"}");
+                throw new ApplicationException($"database info not loaded for selected database"); ;
 
             string connectionString = GetConnectionString(databaseId);
             if (string.IsNullOrEmpty(connectionString))
@@ -98,12 +94,12 @@ namespace RPDB.Services
                 throw new ApplicationException($"cannot build connection string to database {_dataBaseInfo[databaseId].Name} server: {_serverSetting.Name}");
             }
 
-			IEnumerable<string> statements = SplitSqlStatements(sql);
-			VerifyStatements(statements, warrings, errors);
-			if (errors.Count > 0)
-				throw new ApplicationException(errors[0]);
+            IEnumerable<string> statements = SplitSqlStatements(sql);
+            VerifyStatements(statements, warrings, errors);
+            if (errors.Count > 0)
+                throw new ApplicationException(errors[0]);
 
-			using (SqlConnection conn = new SqlConnection(connectionString))
+            using (SqlConnection conn = new SqlConnection(connectionString))
             {
                 conn.Open();
 
@@ -113,6 +109,20 @@ namespace RPDB.Services
                     ExecuteSqlCommand(statementToExecute, conn);
                 }
             }
+        }
+
+        internal void RunScript(ScriptData script, int databaseId, List<string> warrings, List<string> errors)
+        {
+            if (script == null)
+                throw new ApplicationException("Script not selected");
+
+        
+
+            string sql = File.ReadAllText(script.FileData.FullFileName);
+            if (string.IsNullOrEmpty(sql))
+                throw new ApplicationException($"SQL not loaded from {script?.FileData?.FullFileName ?? "null"}");
+
+            RunScriptText(sql, databaseId, warrings, errors);
 
             using (var dbcontext = new DataContext())
             {
@@ -252,5 +262,7 @@ namespace RPDB.Services
                 .Where(x => !string.IsNullOrWhiteSpace(x))
                 .Select(x => x.Trim(' ', '\r', '\n'));
         }
+
+        
     }
 }
