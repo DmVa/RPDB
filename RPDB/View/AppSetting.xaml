@@ -19,8 +19,18 @@
             </StackPanel>
 
             <DataGrid Grid.Column="1" AutoGenerateColumns="False" x:Name="settingsGrid" ItemsSource="{Binding SettingsList}" CanUserAddRows="False" >
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <TextBlock Text="{Binding Hint}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding SettingName}" Header="Setting" Width="150" IsReadOnly="True" />
+                    <DataGridTextColumn Binding="{Binding SettingName}" Header="Setting" Width="150" IsReadOnly="True"  />
                     <DataGridTextColumn Binding="{Binding Value}" Header="Value" Width="1*"/>
                 </DataGrid.Columns>
             </DataGrid>

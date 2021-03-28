@@ -47,11 +47,30 @@ namespace RPDB.ViewModel
                 var settings = dbcontext.AppSettings.ToList();
                 foreach(var setting in settings)
                 {
-                    settingsList.Add(new AppSettingModel() { Id = (int)setting.Id, Value = setting.Value, SettingName = setting.Id.ToString() });
+                    settingsList.Add(new AppSettingModel() { Id = (int)setting.Id, Value = setting.Value, SettingName = setting.Id.ToString(), Hint = GetHint(setting.Id) });
                 }
 
                 SettingsList = settingsList;
             }
+        }
+
+        private string GetHint(AppSettingEnum setting)
+        {
+            string result;
+            switch (setting)
+            {
+                case
+                    AppSettingEnum.AutosyncFoldersFrom:
+                    result = "File from which need to synchronize folders to scan on each startup. Left blank for do not synchronize.";
+                    break;
+                case AppSettingEnum.CompareCommand:
+                    result = "Command to run by Compare action. Expected format like ApplicationToRun.exe [options] \"%1\" \"%2\"";
+                    break;
+                default:
+                    result = "";
+                    break;
+            }
+            return result;
         }
 
         public AppSettingsViewModel()
@@ -90,5 +109,6 @@ namespace RPDB.ViewModel
         public int Id { get; set; }
         public string SettingName { get; set; }
         public string Value { get; set; }
+        public string Hint { get; set; }
     }
 }
