@@ -10,9 +10,12 @@ namespace RPDB.Data
     {
         public int Id { get; set; }
         public string Path { get; set; }
+        
         public bool IncludeSubfolders { get; set; }
         public int DatabaseId { get; set; }
         public Database Database { get; set; }
         public int SortOrder { get; set; }
+        public string SearchMask { get; set; }
+        public string Hint { get; set; }
     }
 }

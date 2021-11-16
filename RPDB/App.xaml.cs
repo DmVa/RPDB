@@ -34,7 +34,9 @@ namespace RPDB
 
         private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            string message = e.Exception.InnerException != null ? e.Exception.InnerException.Message : e.Exception.Message;
+            string message = e.Exception.Message;
+            if (e.Exception.InnerException != null)
+                 message = e.Exception.InnerException.InnerException != null ? e.Exception.InnerException.InnerException.Message : e.Exception.InnerException.Message;
 
             MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             ApplicationSettings.Current.Logger.LogError("unhandled", e.Exception);

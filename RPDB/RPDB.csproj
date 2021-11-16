@@ -107,6 +107,10 @@
     <Compile Include="Migrations\202103262310485_ScriptAddPreviousText.designer.cs">
       <DependentUpon>202103262310485_ScriptAddPreviousText.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202111102125242_AddSearchMask.cs" />
+    <Compile Include="Migrations\202111102125242_AddSearchMask.designer.cs">
+      <DependentUpon>202111102125242_AddSearchMask.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Services\ScriptData.cs" />
     <Compile Include="Services\ScriptFile.cs" />
@@ -197,6 +201,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202103262310485_ScriptAddPreviousText.resx">
       <DependentUpon>202103262310485_ScriptAddPreviousText.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202111102125242_AddSearchMask.resx">
+      <DependentUpon>202111102125242_AddSearchMask.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -37,7 +37,7 @@
             <Button x:Name="buttonServerSettings" Content="Server Settings" Margin="5,5,5,5" Height="35" Command="{Binding ServerSettingsCommand}"  />
             <Button x:Name="buttonAppSettings" Content="App Settings" Margin="5,5,5,5" Height="35" Command="{Binding AppSettingsCommand}"   />
             <Button x:Name="buttonDatabasesSettings" Content="Databases" Margin="5,5,5,5" Height="35" Command="{Binding DatabasesSettingsCommand}"   />
-            <Button x:Name="buttonSearchFolders" Content="Script Folders" Margin="5,5,5,5" Height="35" Command="{Binding SearchFoldersCommand}"  />
+            <Button x:Name="buttonSearchFolders" Content="File Folders" Margin="5,5,5,5" Height="35" Command="{Binding SearchFoldersCommand}"  />
         </StackPanel>
 
         <Grid Grid.Column="1">

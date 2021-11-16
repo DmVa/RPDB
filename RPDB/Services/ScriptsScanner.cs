@@ -11,8 +11,6 @@ namespace RPDB.Services
 {
     public class ScriptsScanner
     {
-        private const string filesPattern = "*.sql";
-
         public ObservableCollection<ScriptData> Collect()
         {
             var localScripts = new List<ScriptFile>();
@@ -24,7 +22,7 @@ namespace RPDB.Services
                 foreach (var folder in folders)
                 {
                     var di = new DirectoryInfo(folder.Path);
-                    Collect(di, folder.IncludeSubfolders, folder.Database, localScripts);
+                    Collect(di, folder.SearchMask, folder.IncludeSubfolders, folder.Database, localScripts);
                 }
 
                 registered = dbcontext.RegisteredScripts.Include("Database").ToDictionary(x=>x.Path+"\\"+x.Name);
@@ -66,14 +64,20 @@ namespace RPDB.Services
             return collected;
         }
 
-        private void Collect(DirectoryInfo di, bool includeSubfolders, Database database, IList<ScriptFile> collected)
+        private void Collect(DirectoryInfo di, string searchMask, bool includeSubfolders, Database database, IList<ScriptFile> collected)
         {
-            var files = di.GetFiles(filesPattern).OrderBy(x => x.Name).ToArray();
+            if (string.IsNullOrEmpty(searchMask))
+                searchMask = "*";
+            var masks = searchMask.Split(';');
+            IEnumerable<FileInfo> files = Enumerable.Empty<FileInfo>();
+            foreach (var mask in masks)
+            {
+                if (!string.IsNullOrEmpty(mask))
+                   files = files.Concat(di.GetFiles(mask).OrderBy(x => x.Name).ToArray());
+            }
+
             foreach (var fileEntry in files)
             {
-                if (fileEntry.Extension.Length != 4)
-                    continue;
-
                 CollectFile(fileEntry, database, collected);
             }
 
@@ -82,7 +86,7 @@ namespace RPDB.Services
             {
                 var subdirectoryEntries = di.GetDirectories();
                 foreach (var subdirectory in subdirectoryEntries)
-                    Collect(subdirectory, includeSubfolders, database, collected);
+                    Collect(subdirectory, searchMask, includeSubfolders, database, collected);
             }
         }
 

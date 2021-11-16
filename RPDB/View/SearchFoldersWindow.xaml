@@ -41,8 +41,16 @@
                     </DataGridComboBoxColumn>
                     <DataGridCheckBoxColumn Header="Subfolders?" IsThreeState="False" SortMemberPath="IncludeSubfolders"  Binding="{Binding IncludeSubfolders}" >
                     </DataGridCheckBoxColumn>
-                    
+
+                    <DataGridTextColumn Header="Search Mask" SortMemberPath="SearchMask" Width="80"  Binding="{Binding SearchMask}" >
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="ToolTip" Value="The files search pattern can be a combination literals and wildcard (* and ?) characters, but not a regular expressions. The default pattern is blank, which returns all files. Patterns can be ; separatted" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                     <DataGridTextColumn Header="Path" SortMemberPath="Path" Width="1*"  Binding="{Binding Path}" />
+                    
 
                 </DataGrid.Columns>
             </DataGrid>

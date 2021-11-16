@@ -24,8 +24,21 @@
                       SelectedItem="{Binding Path=SelectedDatabase, Mode=TwoWay}"
                       CanUserAddRows="True" >
                 <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="150"  />
-                    <DataGridTextColumn Binding="{Binding Alias}" Header="Alias" Width="150"/>
+                    <DataGridTextColumn Binding="{Binding Name}" Header="Name" Width="150"  >
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="ToolTip" Value="The Name of Database in server" />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
+
+                    <DataGridTextColumn Binding="{Binding Alias}" Header="Alias" Width="150">
+                        <DataGridTextColumn.CellStyle>
+                            <Style TargetType="DataGridCell">
+                                <Setter Property="ToolTip" Value="The Alias name of Database inside yours script file. It will be changed to database name during sql execution." />
+                            </Style>
+                        </DataGridTextColumn.CellStyle>
+                    </DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
             

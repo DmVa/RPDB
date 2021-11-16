@@ -186,6 +186,7 @@ namespace RPDB.ViewModel
                             dbData.Path = folderModel.Path;
                             dbData.SortOrder = folderModel.SortOrder;
                             dbData.DatabaseId = folderModel.DatabaseId;
+                            dbData.SearchMask = folderModel.SearchMask; 
                         }
                     }
                     dbcontext.SaveChanges();

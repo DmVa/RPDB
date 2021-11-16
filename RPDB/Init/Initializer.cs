@@ -102,7 +102,7 @@ namespace RPDB.Init
                         sf.IncludeSubfolders = sfd.IncludeSubfolders;
                         sf.Path = sfd.Path;
                         sf.SortOrder = sfd.SortOrder;
-                        
+                        sf.SearchMask = sfd.SearchMask; 
                         context.SearchFolders.Add(sf);
                     }
                     context.SaveChanges();
