@@ -2,6 +2,7 @@
 using RPDB.Data;
 using RPDB.Init;
 using RPDB.Logs;
+using RPDB.Services;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -30,6 +31,25 @@ namespace RPDB
            // initializer.SaveSettings();
             initializer.LoadInitialSettings();
             initializer.SyncFolderDefinitionsIfRequired();
+            var cmd = new CommandLine(e.Args);
+            var errors = new List<string>();
+            cmd.AddCommand("run", ()=> { var actions = new CommandLineActions(); actions.Run(); errors.AddRange(actions.Errors); });
+            if (cmd.IsValid)
+            {
+               cmd.Execute();
+                if (errors.Count == 0)
+                {
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    foreach (var err in errors)
+                    {
+                        Console.WriteLine(err);
+                    }
+                    Environment.Exit(errors.Count);
+                }
+            }
         }
 
         private void App_OnDispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)

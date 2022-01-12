@@ -112,6 +112,8 @@
       <DependentUpon>202111102125242_AddSearchMask.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Services\CommandLine.cs" />
+    <Compile Include="Services\CommandLineActions.cs" />
     <Compile Include="Services\ScriptData.cs" />
     <Compile Include="Services\ScriptFile.cs" />
     <Compile Include="Services\ScriptRunner.cs" />
