@@ -12,7 +12,7 @@ namespace RPDB.Services
         public void Run()
         {
             var sc = new ScriptsScanner();
-            var scripts = sc.Collect();
+            var scripts = sc.Collect().Where(s => s.Status != ScriptStatus.Unchanged).ToArray();
             var sr = new ScriptRunner();
             var warnings = new List<string>();  
             var errors = new List<string>();
